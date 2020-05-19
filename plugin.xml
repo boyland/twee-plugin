@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="edu.uwm.twee.editors.TweeEditor"
+            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
+            extensions="tw"
+            icon="icons/sample.png"
+            id="edu.uwm.twee.editors.TweeEditor"
+            name="Twee Editor">
+      </editor>
+   </extension>
+
+</plugin>

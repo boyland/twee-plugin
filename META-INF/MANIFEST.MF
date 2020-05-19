@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Twee Editor
+Bundle-SymbolicName: edu.uwm.twee;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Automatic-Module-Name: twee-plugin
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-Vendor: edu.uwm
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.ui,
+ org.eclipse.jface.text,
+ org.eclipse.ui.editors
