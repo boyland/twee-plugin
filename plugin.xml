@@ -7,7 +7,7 @@
             class="edu.uwm.twee.editors.TweeEditor"
             contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
             extensions="tw"
-            icon="icons/sample.png"
+            icon="icons/Twine16.png"
             id="edu.uwm.twee.editors.TweeEditor"
             name="Twee Editor">
       </editor>
