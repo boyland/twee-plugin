@@ -5,12 +5,17 @@ import org.eclipse.jface.text.ITextDoubleClickStrategy;
 import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.text.presentation.IPresentationReconciler;
 import org.eclipse.jface.text.presentation.PresentationReconciler;
+import org.eclipse.jface.text.reconciler.IReconciler;
+import org.eclipse.jface.text.reconciler.IReconcilingStrategy;
+import org.eclipse.jface.text.reconciler.Reconciler;
 import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
 import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.swt.SWT;
-
+import org.eclipse.ui.editors.text.EditorsUI;
+import org.eclipse.ui.texteditor.spelling.SpellingReconcileStrategy;
+import org.eclipse.ui.texteditor.spelling.SpellingService;
 import edu.uwm.eclipse.util.ColorManager;
 import edu.uwm.eclipse.util.NonRuleBasedDamagerRepairer;
 
@@ -86,6 +91,16 @@ public class TweeConfiguration extends SourceViewerConfiguration {
 							new TextAttribute(colorManager.getColor(IXMLColorConstants.SC_LINK), null, SWT.BOLD)));
 		}
 		return twPassageScanner;
+	}
+
+	@Override
+	public IReconciler getReconciler(ISourceViewer sourceViewer) {
+		SpellingService spellingService= EditorsUI.getSpellingService();
+		IReconcilingStrategy strategy= new SpellingReconcileStrategy(sourceViewer, spellingService);
+		Reconciler reconciler = new Reconciler();
+		reconciler.setReconcilingStrategy(strategy, TweePartitionScanner.SC_HEADER);
+		reconciler.setReconcilingStrategy(strategy, IDocument.DEFAULT_CONTENT_TYPE);
+		return reconciler;
 	}
 
 	@Override

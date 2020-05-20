@@ -9,4 +9,5 @@ Bundle-Vendor: edu.uwm
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui,
  org.eclipse.jface.text,
- org.eclipse.ui.editors
+ org.eclipse.ui.editors,
+ org.eclipse.ui.workbench.texteditor
