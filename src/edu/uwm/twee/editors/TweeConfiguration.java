@@ -98,6 +98,7 @@ public class TweeConfiguration extends SourceViewerConfiguration {
 		SpellingService spellingService= EditorsUI.getSpellingService();
 		IReconcilingStrategy strategy= new SpellingReconcileStrategy(sourceViewer, spellingService);
 		Reconciler reconciler = new Reconciler();
+		reconciler.setDocumentPartitioning(this.getConfiguredDocumentPartitioning(sourceViewer));
 		reconciler.setReconcilingStrategy(strategy, TweePartitionScanner.SC_HEADER);
 		reconciler.setReconcilingStrategy(strategy, IDocument.DEFAULT_CONTENT_TYPE);
 		return reconciler;
