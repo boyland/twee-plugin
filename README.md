@@ -1,7 +1,9 @@
 # twee-plugin
-Eclipse plugin for Twee3 + Sugarcube
+Eclipse plugin for Twee3 + SugarCube
 ## Version
-Twee Plugin version 0.1
+Twee Plugin version 0.2
+* plugin enabled with drop-in JAR
+* spell-checking of regular text
 * editor highlight support for files with `.tw` extension
 ## License
 Originally written by John Boyland <boyland@uwm.edu>.
@@ -9,7 +11,7 @@ This project is released to the public domain.
 It may be used/copied/modified in any way.
 The author retains no rights.
 ## Purpose
-Provide editor support for Twee3 code using Sugarcube.  Currently it only provides highlighting.
+Provide editor support for Twee3 code using SugarCube.  Currently it only provides highlighting.
 ## Installation
-It can currently only be used by installing the project into an Eclipse workspace 
-with Java and Plugin Development support, and then running an Eclipse workbench within it.
+The release page has a JAR file that can be dropped in the `plugins` folder of your Eclipse installation.  
+Or you can clone the whole project into an Eclipse workspace with Java and Plugin Development support, and then run an Eclipse workbench within it using this plugin.
