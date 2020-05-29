@@ -15,7 +15,7 @@ public class TweeDocumentProvider extends FileDocumentProvider {
 			IDocumentPartitioner partitioner = new FastPartitioner(new TweePartitionScanner(),
 					new String[] { 
 							TweePartitionScanner.XML_TAG, 
-							TweePartitionScanner.SC_TAG, 
+							TweePartitionScanner.SC_MACRO, 
 							TweePartitionScanner.SC_LINK,
 							TweePartitionScanner.SC_CODE,
 							TweePartitionScanner.SC_HEADER,

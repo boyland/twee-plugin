@@ -1,7 +1,8 @@
 # twee-plugin
 Eclipse plugin for Twee3 + SugarCube
 ## Version
-Twee Plugin version 0.2
+Twee Plugin version 0.3
+* highlighting copied from default JavaScript syntax highlighting
 * plugin enabled with drop-in JAR
 * spell-checking of regular text
 * editor highlight support for files with `.tw` extension

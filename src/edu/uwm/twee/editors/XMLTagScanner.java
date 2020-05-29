@@ -8,7 +8,7 @@ import edu.uwm.eclipse.util.ColorManager;
 public class XMLTagScanner extends RuleBasedScanner {
 
 	public XMLTagScanner(ColorManager manager) {
-		IToken string = new Token(new TextAttribute(manager.getColor(IXMLColorConstants.STRING)));
+		IToken string = new Token(new TextAttribute(manager.getColor(ITweeColorConstants.STRING)));
 
 		IRule[] rules = new IRule[3];
 

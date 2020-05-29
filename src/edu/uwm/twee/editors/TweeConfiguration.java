@@ -41,7 +41,7 @@ public class TweeConfiguration extends SourceViewerConfiguration {
 			TweePartitionScanner.SC_HEADER,
 			TweePartitionScanner.SC_CODE,
 			TweePartitionScanner.SC_LINK,
-			TweePartitionScanner.SC_TAG,
+			TweePartitionScanner.SC_MACRO,
 			TweePartitionScanner.XML_TAG};
 	}
 
@@ -60,7 +60,7 @@ public class TweeConfiguration extends SourceViewerConfiguration {
 			scanner.setDefaultReturnToken(
 				new Token(
 					new TextAttribute(
-						colorManager.getColor(IXMLColorConstants.DEFAULT))));
+						colorManager.getColor(ITweeColorConstants.DEFAULT))));
 		}
 		return scanner;
 	}
@@ -70,7 +70,7 @@ public class TweeConfiguration extends SourceViewerConfiguration {
 			tagScanner.setDefaultReturnToken(
 				new Token(
 					new TextAttribute(
-						colorManager.getColor(IXMLColorConstants.TAG))));
+						colorManager.getColor(ITweeColorConstants.XML_TAG))));
 		}
 		return tagScanner;
 	}
@@ -80,7 +80,7 @@ public class TweeConfiguration extends SourceViewerConfiguration {
 			sctagScanner.setDefaultReturnToken(
 					new Token(
 							new TextAttribute(
-									colorManager.getColor(IXMLColorConstants.SCTAG))));
+									colorManager.getColor(ITweeColorConstants.SC_MACRO))));
 		}
 		return sctagScanner;
 	}
@@ -89,7 +89,7 @@ public class TweeConfiguration extends SourceViewerConfiguration {
 			twPassageScanner = new TWPassageScanner(colorManager);
 			twPassageScanner.setDefaultReturnToken(
 					new Token(
-							new TextAttribute(colorManager.getColor(IXMLColorConstants.SC_LINK), null, SWT.BOLD)));
+							new TextAttribute(colorManager.getColor(ITweeColorConstants.SC_LINK), null, SWT.BOLD)));
 		}
 		return twPassageScanner;
 	}
@@ -114,8 +114,8 @@ public class TweeConfiguration extends SourceViewerConfiguration {
 		reconciler.setRepairer(dr, TweePartitionScanner.XML_TAG);
 
 		dr = new DefaultDamagerRepairer(getSCTagScanner());
-		reconciler.setDamager(dr, TweePartitionScanner.SC_TAG);
-		reconciler.setRepairer(dr, TweePartitionScanner.SC_TAG);
+		reconciler.setDamager(dr, TweePartitionScanner.SC_MACRO);
+		reconciler.setRepairer(dr, TweePartitionScanner.SC_MACRO);
 		
 		dr = new DefaultDamagerRepairer(getTWPassageScanner());
 		reconciler.setDamager(dr, TweePartitionScanner.TW_PASSAGE);
@@ -126,22 +126,22 @@ public class TweeConfiguration extends SourceViewerConfiguration {
 		reconciler.setRepairer(dr, IDocument.DEFAULT_CONTENT_TYPE);
 
 		NonRuleBasedDamagerRepairer ndr = new NonRuleBasedDamagerRepairer(
-				new TextAttribute(colorManager.getColor(IXMLColorConstants.XML_COMMENT)));
+				new TextAttribute(colorManager.getColor(ITweeColorConstants.XML_COMMENT)));
 		reconciler.setDamager(ndr, TweePartitionScanner.XML_COMMENT);
 		reconciler.setRepairer(ndr, TweePartitionScanner.XML_COMMENT);
 
 		ndr = new NonRuleBasedDamagerRepairer(
-				new TextAttribute(colorManager.getColor(IXMLColorConstants.JS_COMMENT)));
+				new TextAttribute(colorManager.getColor(ITweeColorConstants.JS_COMMENT)));
 		reconciler.setDamager(ndr, TweePartitionScanner.JS_COMMENT);
 		reconciler.setRepairer(ndr, TweePartitionScanner.JS_COMMENT);
 
 		ndr = new NonRuleBasedDamagerRepairer(
-				new TextAttribute(colorManager.getColor(IXMLColorConstants.SC_CODE)));
+				new TextAttribute(colorManager.getColor(ITweeColorConstants.SC_CODE)));
 		reconciler.setDamager(ndr, TweePartitionScanner.SC_CODE);
 		reconciler.setRepairer(ndr, TweePartitionScanner.SC_CODE);
 
 		ndr = new NonRuleBasedDamagerRepairer(
-				new TextAttribute(colorManager.getColor(IXMLColorConstants.SC_LINK)));
+				new TextAttribute(colorManager.getColor(ITweeColorConstants.SC_LINK)));
 		reconciler.setDamager(ndr, TweePartitionScanner.SC_LINK);
 		reconciler.setRepairer(ndr, TweePartitionScanner.SC_LINK);
 

@@ -1,5 +1,16 @@
 package edu.uwm.twee;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+
 public class Version {
 
 	private final String versionString;
@@ -14,14 +25,52 @@ public class Version {
 	/**
 	 * (Eventually)
 	 * Compute the version string by trying to find the file "README.md"
-	 * and reading the first line. 
+	 * and reading the appropriate line
 	 * @return version string
 	 */
 	private static String getVersionString() {
-		return "Twee Editor version 0.1";
+		String version = VERSION_PREFIX + " ???";
+        // Rather than include the version here, we look for README.md
+        // This is rather more complex than I hoped; if we are packed up in a JAR,
+        // it's easy to find, but otherwise, we have to go hunting.
+        InputStream s = Version.class.getClassLoader().getResourceAsStream("README.md");
+        if (s == null) {
+                URL execdir = Version.class.getClassLoader().getResource(".");
+                URI uri;
+                try {
+                        uri = execdir.toURI();
+                } catch (URISyntaxException e) {
+                        // muffle exception
+                        return version;
+                }
+                if (uri.getScheme().equals("file")) {
+                        File dir = new File(uri.getPath());
+                        File rfile = new File(dir.getParentFile(),"README.md");
+                        try {
+                                s = new FileInputStream(rfile);
+                        } catch (FileNotFoundException ex) {
+                                // muffle exception
+                                return version;
+                        }
+                }
+        }
+        try {
+                BufferedReader br = new BufferedReader(new InputStreamReader(s));
+                String line;
+                while ((line = br.readLine()) != null) {
+                	if (line.startsWith(VERSION_PREFIX)) {
+                		version = line;
+                		break;
+                	}
+                }
+        } catch (IOException e) {
+                // muffle exception
+        }
+        return version;
 	}
 
 	private static Version instance = null;
+	private static final String VERSION_PREFIX = "Twee Plugin version";
 
 	/**
 	 * Get the current version, which can then be printed/displayed.
