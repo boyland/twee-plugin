@@ -12,5 +12,19 @@
             name="Twee Editor">
       </editor>
    </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            id="edu.uwm.twee"
+            name="Twee">
+      </category>
+      <wizard
+            category="edu.uwm.twee"
+            class="edu.uwm.twee.wizards.NewTwee"
+            icon="icons/Twine16.png"
+            id="edu.uwm.twee.wizards.NewTwee"
+            name="Twee file">
+      </wizard>
+   </extension>
 
 </plugin>

@@ -2,7 +2,9 @@
 Eclipse plugin for Twee3 + SugarCube
 ## Version
 Twee Plugin version 0.3
+* new file wizard, including creating an IFID
 * highlighting copied from default JavaScript syntax highlighting
+version 0.2
 * plugin enabled with drop-in JAR
 * spell-checking of regular text
 * editor highlight support for files with `.tw` extension
