@@ -21,6 +21,11 @@ public class TweeEditor extends TextEditor {
 	}
 
 	@Override
+	protected boolean isLineNumberRulerVisible() {
+		return true;
+	}
+
+	@Override
 	public void dispose() {
 		colorManager.dispose();
 		super.dispose();

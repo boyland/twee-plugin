@@ -11,4 +11,5 @@ public interface IXMLColorConstants {
 	RGB SCTAG = new RGB(128,0,128);
 	RGB SC_CODE = new RGB(64,64,128);
 	RGB SC_LINK = new RGB(0,0,128);
+	RGB JS_COMMENT = new RGB(128, 0, 0);
 }

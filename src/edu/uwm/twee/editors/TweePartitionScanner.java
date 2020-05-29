@@ -16,6 +16,7 @@ public class TweePartitionScanner extends RuleBasedPartitionScanner {
 	public final static String SC_LINK = "__sc_link";
 	public final static String SC_HEADER = "__sc_header";
 	public final static String TW_PASSAGE = "__tw_passage";
+	public final static String JS_COMMENT = "__js_comment";
 
 	public TweePartitionScanner() {
 
@@ -26,16 +27,18 @@ public class TweePartitionScanner extends RuleBasedPartitionScanner {
 		IToken scHeader = new Token(SC_HEADER);
 		IToken tag = new Token(XML_TAG);
 		IToken sctag = new Token(SC_TAG);
+		IToken jsComment = new Token(JS_COMMENT);
 
-		IPredicateRule[] rules = new IPredicateRule[7];
+		IPredicateRule[] rules = new IPredicateRule[8];
 
 		rules[0] = new MultiLineRule("<!--", "-->", xmlComment);
 		rules[1] = new MultiLineRule("{{{","}}}", scCode);
 		rules[2] = new MultiLineRule("[[","]]", scLink);
-		rules[3] = new WholeLineRule("!",scHeader);
-		rules[4] = new WholeLineRule("::",twPassage);
-		rules[5] = new TagRule(tag);
-		rules[6] = new SCTagRule(sctag);
+		rules[3] = new MultiLineRule("/*","*/", jsComment);
+		rules[4] = new WholeLineRule("!",scHeader);
+		rules[5] = new WholeLineRule("::",twPassage);
+		rules[6] = new TagRule(tag);
+		rules[7] = new SCTagRule(sctag);
 
 		setPredicateRules(rules);
 	}

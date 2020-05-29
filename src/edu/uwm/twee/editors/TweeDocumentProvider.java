@@ -20,6 +20,7 @@ public class TweeDocumentProvider extends FileDocumentProvider {
 							TweePartitionScanner.SC_CODE,
 							TweePartitionScanner.SC_HEADER,
 							TweePartitionScanner.TW_PASSAGE,
+							TweePartitionScanner.JS_COMMENT,
 							TweePartitionScanner.XML_COMMENT });
 			partitioner.connect(document);
 			document.setDocumentPartitioner(partitioner);

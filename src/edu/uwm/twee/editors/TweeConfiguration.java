@@ -36,6 +36,7 @@ public class TweeConfiguration extends SourceViewerConfiguration {
 		return new String[] {
 			IDocument.DEFAULT_CONTENT_TYPE,
 			TweePartitionScanner.XML_COMMENT,
+			TweePartitionScanner.JS_COMMENT,
 			TweePartitionScanner.TW_PASSAGE,
 			TweePartitionScanner.SC_HEADER,
 			TweePartitionScanner.SC_CODE,
@@ -128,6 +129,11 @@ public class TweeConfiguration extends SourceViewerConfiguration {
 				new TextAttribute(colorManager.getColor(IXMLColorConstants.XML_COMMENT)));
 		reconciler.setDamager(ndr, TweePartitionScanner.XML_COMMENT);
 		reconciler.setRepairer(ndr, TweePartitionScanner.XML_COMMENT);
+
+		ndr = new NonRuleBasedDamagerRepairer(
+				new TextAttribute(colorManager.getColor(IXMLColorConstants.JS_COMMENT)));
+		reconciler.setDamager(ndr, TweePartitionScanner.JS_COMMENT);
+		reconciler.setRepairer(ndr, TweePartitionScanner.JS_COMMENT);
 
 		ndr = new NonRuleBasedDamagerRepairer(
 				new TextAttribute(colorManager.getColor(IXMLColorConstants.SC_CODE)));
