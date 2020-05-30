@@ -156,7 +156,7 @@ public class NewTwee extends Wizard implements INewWizard {
 		ByteBuffer bb = ByteBuffer.wrap(uuid);
 		return String.format("%08X-%04X-%04X-%04X-%012X", 
 				bb.getInt(), bb.getShort(), bb.getShort(), bb.getShort(), 
-				((bb.getShort()&65535L)<<32L)|bb.getInt());
+				((bb.getShort()&65535L)<<32)|(bb.getInt() & (long)Integer.MAX_VALUE));
 	}
 	
 	/**
