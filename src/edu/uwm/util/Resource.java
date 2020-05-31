@@ -40,6 +40,8 @@ public class Resource {
 		if (cl == null) cl = Resource.class;
 		InputStream s = cl.getClassLoader().getResourceAsStream(name);
 		if (s != null) return s;
+		s = cl.getClassLoader().getResourceAsStream("resources/" + name);
+		if (s != null) return s;
 		URL execdir = Version.class.getClassLoader().getResource(".");
         URI uri;
         try {
@@ -52,10 +54,13 @@ public class Resource {
                 File dir = new File(uri.getPath());
                 File rfile = new File(dir.getParentFile(),name);
                 try {
-                        s = new FileInputStream(rfile);
+                        return new FileInputStream(rfile);
                 } catch (FileNotFoundException ex) {
-                        // muffle exception
-                        return null;
+                }
+                rfile = new File(dir.getParentFile(),"resources" + File.separatorChar + name);
+                try {
+                    return new FileInputStream(rfile);
+                } catch (FileNotFoundException ex) {
                 }
         }
         return s;

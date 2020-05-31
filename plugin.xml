@@ -26,5 +26,46 @@
             name="Twee file">
       </wizard>
    </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="edu.uwm.twee.preferences.TweePreferencePage"
+            id="edu.uwm.twee.preferences.TweePreferencePage"
+            name="Twee">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="edu.uwm.twee.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors.annotationTypes">
+      <type
+            markerSeverity="1"
+            name="edu.uwm.twee.macro">
+      </type>
+   </extension>
+   <extension
+         id="tweeMacroError"
+         name="Twee Macro Errors"
+         point="org.eclipse.ui.editors.markerAnnotationSpecification">
+      <specification
+            annotationType="edu.uwm.twee.macro"
+            colorPreferenceKey="clcolor"
+            colorPreferenceValue="255,0,0"
+            includeOnPreferencePage="true"
+            label="Twee Macro Errors"
+            overviewRulerPreferenceKey="clruler"
+            overviewRulerPreferenceValue="true"
+            textPreferenceKey="cltext"
+            textPreferenceValue="true"
+            textStylePreferenceKey="clstyle"
+            textStylePreferenceValue="PROBLEM_UNDERLINE"
+            verticalRulerPreferenceKey="clvertical"
+            verticalRulerPreferenceValue="true">
+      </specification>
+   </extension>
 
 </plugin>

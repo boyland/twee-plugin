@@ -8,7 +8,7 @@ test:
 
 TESTBIN= bin/edu/uwm/twee/editors/TweeEditor.class
 build-plugin : ${TESTBIN} README.md
-	jar cmf META-INF/MANIFEST.MF edu.uwm.twee-plugin_${VERSION}.jar plugin.xml README.md icons/*.png -C bin .
+	jar cmf META-INF/MANIFEST.MF edu.uwm.twee-plugin_${VERSION}.jar plugin.xml README.md icons/*.png -C resources . -C bin .
 
 ${TESTBIN}:
 	@echo Unable to compile Eclipse plugin code in Makefile.

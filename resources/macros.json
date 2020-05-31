@@ -1,0 +1,233 @@
+{
+	"capture": {
+		"argumentSyntax": "COMMASEP",
+		"maxArguments": 255,
+		"nestedMacros": []
+	},
+	"set": "EXPRESSION",
+	"unset": {
+		"argumentSyntax": "COMMASEP",
+		"maxArguments": 255
+	},
+	"run": "EXPRESSION",
+	"script": [],
+	"=": "EXPRESSION",
+	"-": "EXPRESSION",
+	"print": "EXPRESSION",
+	"include": {
+		"minArguments": 1,
+		"maxArguments": 2
+	},
+	"nobr": [],
+	"silently": [],
+	"if": {
+		"argumentSyntax": "EXPRESSION",
+		"nestedMacros": [
+			"elseif",
+			"else"
+		]
+	},
+	"elseif": {
+		"argumentSyntax": "EXPRESSION",
+		"nestedMacros": [
+			"if"
+		],
+		"isNested": true
+	},
+	"else": {
+		"nestedMacros": [
+			"if"
+		],
+		"isNested": true
+	},
+	"for": {
+		"argumentSyntax": "EXPRESSION",
+		"nestedMacros": []
+	},
+	"break": null,
+	"continue": null,
+	"switch": {
+		"argumentSyntax": "EXPRESSION",
+		"nestedMacros": [
+			"case",
+			"default"
+		]
+	},
+	"case": {
+		"minArguments": 1,
+		"maxArguments": 255,
+		"nestedMacros": [
+			"switch"
+		],
+		"isNested": true
+	},
+	"default": {
+		"nestedMacros": [
+			"switch"
+		],
+		"isNested": true
+	},
+	"button": {
+		"minArguments": 1,
+		"maxArguments": 2,
+		"nestedMacros": []
+	},
+	"checkbox": {
+		"minArguments": 3,
+		"maxArguments": 4
+	},
+	"cycle" : {
+		"minArguments" : 1,
+		"maxArguments" : 2,
+		"nestedMacros" : [
+			"option",
+			"optionsfrom"
+		]
+	},
+	"listbox" : {
+		"minArguments" : 1,
+		"maxArguments" : 2,
+		"nestedMacros" : [
+			"option",
+			"optionsfrom"
+		]
+	},
+	"option" : {
+		"minArguments" : 1,
+		"maxArguments" : 3,
+		"nestedMacros" : [
+			"cycle",
+			"listbox"
+		],
+		"isNested" : true
+	},
+	"optionfrom" : {
+		"argumentSyntax" : "EXPRESSION",
+		"nestedMacros" : [
+			"cycle",
+			"listbox"
+		],
+		"isNested" : true
+	},
+	"link": {
+		"minArguments": 1,
+		"maxArguments": 2,
+		"nestedMacros": []
+	},
+	"linkappend": {
+		"minArguments": 1,
+		"maxArguments": 2,
+		"nestedMacros": []
+	},
+	"linkprepend": {
+		"minArguments": 1,
+		"maxArguments": 2,
+		"nestedMacros": []
+	},
+	"linkreplace": {
+		"minArguments": 1,
+		"maxArguments": 2,
+		"nestedMacros": []
+	},
+	"radiobutton": {
+		"minArguments": 2,
+		"maxArguments": 3
+	},
+	"textbox": {
+		"minArguments": 2,
+		"maxArguments": 4
+	},
+	"actions" : {
+		"minArguments" : 1,
+		"maxArguments" : 255
+	},
+	"back" : {
+		"minArguments": 0,
+		"maxArguments": 1
+	},
+	"choice" : {
+		"minArguments": 1,
+		"maxArguments": 2
+	},
+	"return" : {
+		"minArguments": 0,
+		"maxArguments": 1
+	},
+	"addclass" : 2,
+	"append": {
+		"minArguments": 1,
+		"maxArguments": 2,
+		"nestedMacros": []
+	},
+	"copy" : 1,
+	"prepend": {
+		"minArguments": 1,
+		"maxArguments": 2,
+		"nestedMacros": []
+	},
+	"remove" : 1,
+	"removeclass" : {
+		"minArguments": 1,
+		"maxArguments": 2
+	},
+	"replace": {
+		"minArguments": 1,
+		"maxArguments": 2,
+		"nestedMacros": []
+	},
+	"toggleclass" : 2,
+	"audio" : {
+		"minArguments": 2,
+		"maxArguments": 255
+	},
+	"cacheaudio" : {
+		"minArguments": 2,
+		"maxArguments": 255
+	},
+	"createaudiogroup" : {
+		"minArguments" : 1,
+		"nestedMacros" : ["track"]
+	},
+	"createplaylist" : {
+		"minArguments" : 1,
+		"nestedMacros" : ["track"]
+	},
+	"track" : {
+		"minArguments" : 1,
+		"maxArguments" : 255,
+		"nestedMacros" : ["createaudiogroup","createplaylist"],
+		"isNested" : true
+	},
+	"playlist" : {
+		"minArguments" : 2,
+		"maxArguments" : 255
+	},
+	"masteraudio" : {
+		"minArguments": 1,
+		"maxArguments": 255
+	},
+	"removeaudiogroup" : 1,
+	"removeplaylist" : 1,
+	"waitforaudio" : null,
+	"goto" : 1,
+	"repeat" : {
+		"minArguments": 1,
+		"maxArguments": 2,
+		"nestedMacros": []
+	},
+	"stop" : null,
+	"timed" : {
+		"minArguments": 1,
+		"maxArguments": 2,
+		"nestedMacros": ["next"]
+	},
+	"next" : {
+		"maxArguments" : 1,
+		"nestedMacros" : ["timed"],
+		"isNested" : true
+	},
+	"widget" : {
+		"minArguments" : 1,
+		"nestedMacros" : []
+	}
+}
