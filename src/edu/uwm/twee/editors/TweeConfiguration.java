@@ -16,11 +16,12 @@ import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.swt.SWT;
 import org.eclipse.ui.editors.text.EditorsUI;
-import org.eclipse.ui.texteditor.spelling.SpellingReconcileStrategy;
 import org.eclipse.ui.texteditor.spelling.SpellingService;
 
 import edu.uwm.eclipse.util.ColorManager;
 import edu.uwm.eclipse.util.NonRuleBasedDamagerRepairer;
+import edu.uwm.eclipse.util.ReconcilerFixed;
+import edu.uwm.eclipse.util.SpellingReconcileStrategyFixed;
 
 public class TweeConfiguration extends SourceViewerConfiguration {
 	private XMLDoubleClickStrategy doubleClickStrategy;
@@ -100,9 +101,9 @@ public class TweeConfiguration extends SourceViewerConfiguration {
 	@Override
 	public IReconciler getReconciler(ISourceViewer sourceViewer) {
 		SpellingService spellingService = EditorsUI.getSpellingService();
-		IReconcilingStrategy strategy = new SpellingReconcileStrategy(sourceViewer, spellingService);
+		IReconcilingStrategy strategy = new SpellingReconcileStrategyFixed(sourceViewer, spellingService);
 		IReconcilingStrategy macroCheck = new SugarCubeMacroChecker(sourceViewer);
-		Reconciler reconciler = new Reconciler();
+		Reconciler reconciler = new ReconcilerFixed();
 		reconciler.setDocumentPartitioning(this.getConfiguredDocumentPartitioning(sourceViewer));
 		reconciler.setReconcilingStrategy(strategy, IDocument.DEFAULT_CONTENT_TYPE);
 		reconciler.setReconcilingStrategy(macroCheck, TweePartitionScanner.SC_MACRO);

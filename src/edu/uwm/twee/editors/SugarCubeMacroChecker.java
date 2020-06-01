@@ -28,6 +28,7 @@ import org.eclipse.jface.text.source.IAnnotationModel;
 import org.eclipse.jface.text.source.IAnnotationModelExtension;
 import org.eclipse.jface.text.source.ISourceViewer;
 
+import edu.uwm.eclipse.util.IReconcilingStrategyExtension2;
 import edu.uwm.twee.Activator;
 import edu.uwm.twee.macro.MacroDictionary;
 import edu.uwm.twee.preferences.PreferenceConstants;
@@ -37,7 +38,7 @@ import edu.uwm.twee.preferences.PreferenceConstants;
  *
  * @since 3.3
  */
-public class SugarCubeMacroChecker implements IReconcilingStrategy, IReconcilingStrategyExtension {
+public class SugarCubeMacroChecker implements IReconcilingStrategy, IReconcilingStrategyExtension, IReconcilingStrategyExtension2 {
 
 	/**
 	 * Problem collector.
@@ -72,11 +73,11 @@ public class SugarCubeMacroChecker implements IReconcilingStrategy, IReconciling
 			fAddAnnotations.put(new SugarCubeMacroAnnotation(problem), new Position(location.getOffset(), location.getLength()));
 		}
 
-		public void beginCollecting() {
+		public void beforeCollecting() {
 			fAddAnnotations= new HashMap<>();
 		}
 
-		public void endCollecting(IRegion handled) {
+		public void afterCollecting(IRegion handled) {
 			if (fAddAnnotations == null) return;
 			List<Annotation> toRemove= new ArrayList<>();
 
@@ -108,10 +109,6 @@ public class SugarCubeMacroChecker implements IReconcilingStrategy, IReconciling
 			fAddAnnotations= null;
 		}
 		
-		public void endCollecting() {
-			endCollecting(null);
-		}
-		
 	}
 
 
@@ -141,6 +138,11 @@ public class SugarCubeMacroChecker implements IReconcilingStrategy, IReconciling
 
 	@Override
 	public void initialReconcile() {
+		initialReconcile(TweePartitionScanner.SC_MACRO);
+	}
+
+	@Override
+	public void initialReconcile(String contentType) {
 		if (!Activator.getDefault().getPreferenceStore().getBoolean(PreferenceConstants.P_MACROCHECK))
 			return;
 		if (fProgressMonitor != null) {
@@ -161,18 +163,17 @@ public class SugarCubeMacroChecker implements IReconcilingStrategy, IReconciling
 			if (fProgressMonitor != null) {
 				fProgressMonitor.worked(1);
 			}
-			fCollector.beginCollecting();
+			fCollector.beforeCollecting();
 
 			int segment = regions.length / 10;
 			int count = 0;
 			for (ITypedRegion r : regions) {
-				if (fProgressMonitor != null && fProgressMonitor.isCanceled()) return;
 				if (count++ == segment) {
 					if (fProgressMonitor != null) {
 						fProgressMonitor.worked(1);
 					}
 				}
-				if (TweePartitionScanner.SC_MACRO.equals(r.getType())) {
+				if (contentType.equals(r.getType())) {
 					check(r);
 				}
 			}
@@ -180,13 +181,29 @@ public class SugarCubeMacroChecker implements IReconcilingStrategy, IReconciling
 				fProgressMonitor.worked(1);
 			}
 		} finally {
-			fCollector.endCollecting();
+			fCollector.afterCollecting(null);
 			if (fProgressMonitor != null) fProgressMonitor.done();
 		}
 	}
 
 	@Override
-	public void reconcile(DirtyRegion dirtyRegion, IRegion subRegion) {
+	public void beforeReconcile(DirtyRegion reg) {
+		fCollector.beforeCollecting();	
+	}
+
+	@Override
+	public void afterReconcile(DirtyRegion reg) {
+		fCollector.afterCollecting(reg);
+	}
+
+	@Override
+	public void reconcile(DirtyRegion dirtyRegion, IRegion subRegion) {		
+		try {
+			ITypedRegion tr = TextUtilities.getPartition(fDocument, IDocumentExtension3.DEFAULT_PARTITIONING, subRegion.getOffset(), false);
+			subRegion = tr;
+		} catch (BadLocationException e) {
+			// muffle
+		}
 		reconcile(subRegion);
 	}
 
@@ -196,21 +213,19 @@ public class SugarCubeMacroChecker implements IReconcilingStrategy, IReconciling
 				|| getAnnotationModel() == null || fCollector == null) {
 			return;
 		}
-		
+		if (fProgressMonitor != null && fProgressMonitor.isCanceled()) return;
+		/*
 		try {
-			fCollector.beginCollecting();
-			if (fProgressMonitor != null && fProgressMonitor.isCanceled()) return;
 			ITypedRegion tr = TextUtilities.getPartition(fDocument, IDocumentExtension3.DEFAULT_PARTITIONING, region.getOffset(), false);
 			check(tr);
 		} catch (BadLocationException e) {
 			// shouldn't happen
 			System.err.println("bad region: " + e);
-		} finally {
-			fCollector.endCollecting(region);
-		}
+		}*/
+		check(region);
 	}
 
-	protected void check(ITypedRegion tr) {
+	protected void check(IRegion tr) {
 		try {
 			int length = tr.getLength();
 			if (length >= 4) {
