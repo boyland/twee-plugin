@@ -5,7 +5,8 @@ Twee Plugin version 0.4
 * macro checking enabled
 * new file wizard, including creating an IFID
 * highlighting copied from default JavaScript syntax highlighting
-version 0.2
+
+Twee Plugin version 0.2
 * plugin enabled with drop-in JAR
 * spell-checking of regular text
 * editor highlight support for files with `.tw` extension
@@ -22,13 +23,13 @@ Or you can clone the whole project into an Eclipse workspace with Java and Plugi
 ## Documentation
 ### Macro definition syntax
 If you use non-standard SugarCube macros (or declare your own widgets), you will need to declare them in a JSON file or uses of them will be marked as incorrect.  The JSON file has one value for each macro.  Most generally this is a JSON object with the following properties:
-* argumentSyntax: one of the strings `NORMAL`, `EXPRESSION`, or `COMMASEP`
+* argumentSyntax: one of the strings `NORMAL`, `EXPRESSION`, or `COMMASEP`;
   The first is for macros which space separate arguments, the second takes a *TwineScript* expression. The latter is for comma-separated lists.
-* minArguments, maxArguments: integers
+* minArguments, maxArguments: integers;
   The minimum (default 0) and maximum (default, same as minimum) number of arguments this macro can take.  Most relevant for `NORMAL` macros.
-* isNested: boolean
+* isNested: boolean;
   If true, this macro call can only appear inside of another macro's body.
-* nestedMacros: array
+* nestedMacros: array;
   If non-null, the names of macros that may only appear directly nested in this one, or if `isNested` then the names of amcros that use this macro inside them.
 For example, here is a small excerpt of pre-defined macros:
 ``` json
