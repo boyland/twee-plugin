@@ -200,7 +200,7 @@ public class SugarCubeMacroChecker implements IReconcilingStrategy, IReconciling
 		try {
 			fCollector.beginCollecting();
 			if (fProgressMonitor != null && fProgressMonitor.isCanceled()) return;
-			ITypedRegion tr = TextUtilities.getPartition(fDocument, IDocumentExtension3.DEFAULT_PARTITIONING, region.getOffset(), true);
+			ITypedRegion tr = TextUtilities.getPartition(fDocument, IDocumentExtension3.DEFAULT_PARTITIONING, region.getOffset(), false);
 			check(tr);
 		} catch (BadLocationException e) {
 			// shouldn't happen
