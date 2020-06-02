@@ -72,12 +72,6 @@ public class SugarCubeMacroChecker implements IReconcilingStrategy, IReconciling
 		}
 
 		public void accept(IRegion location, String problem) {
-			try {
-				System.out.println("On " + fDocument.get(location.getOffset(),location.getLength()) + ": " + problem);
-			} catch (BadLocationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			fAddAnnotations.put(new SugarCubeMacroAnnotation(problem), new Position(location.getOffset(), location.getLength()));
 		}
 
