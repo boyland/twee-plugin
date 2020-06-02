@@ -50,6 +50,9 @@ public class SugarCubeMacroChecker implements IReconcilingStrategy, IReconciling
 
 		/** Annotations to add. */
 		private Map<Annotation, Position> fAddAnnotations;
+		
+		/** Areas to remove annotatiosn from */
+		private List<IRegion> fRemoveAnnotations = new ArrayList<>();
 
 		/** Lock object for modifying the annotations. */
 		private Object fLockObject;
@@ -69,11 +72,29 @@ public class SugarCubeMacroChecker implements IReconcilingStrategy, IReconciling
 		}
 
 		public void accept(IRegion location, String problem) {
+			try {
+				System.out.println("On " + fDocument.get(location.getOffset(),location.getLength()) + ": " + problem);
+			} catch (BadLocationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			fAddAnnotations.put(new SugarCubeMacroAnnotation(problem), new Position(location.getOffset(), location.getLength()));
 		}
 
+		public void clear(IRegion location) {
+			fRemoveAnnotations.add(location);
+		}
+		
+		protected boolean isCleared(Position p) {
+			for (IRegion r : fRemoveAnnotations) {
+				if (p.overlapsWith(r.getOffset(), r.getLength())) return true;
+			}
+			return false;
+		}
+		
 		public void beforeCollecting() {
 			fAddAnnotations= new HashMap<>();
+			fRemoveAnnotations.clear();
 		}
 
 		public void afterCollecting(IRegion handled) {
@@ -86,7 +107,8 @@ public class SugarCubeMacroChecker implements IReconcilingStrategy, IReconciling
 					Annotation annotation= iter.next();
 					if (SugarCubeMacroAnnotation.TYPE.equals(annotation.getType())) {
 						Position p = fAnnotationModel.getPosition(annotation);
-						if (handled == null || p.overlapsWith(handled.getOffset(), handled.getLength())) {
+						if (handled == null || p.overlapsWith(handled.getOffset(), handled.getLength())
+								|| isCleared(p)) {
 							toRemove.add(annotation);
 						}
 					}
@@ -106,6 +128,7 @@ public class SugarCubeMacroChecker implements IReconcilingStrategy, IReconciling
 			}
 
 			fAddAnnotations= null;
+			fRemoveAnnotations.clear();
 		}
 		
 	}
@@ -200,6 +223,7 @@ public class SugarCubeMacroChecker implements IReconcilingStrategy, IReconciling
 		try {
 			ITypedRegion tr = TextUtilities.getPartition(fDocument, IDocumentExtension3.DEFAULT_PARTITIONING, subRegion.getOffset(), false);
 			subRegion = tr;
+			// System.out.println("  in reconcile, changed subregion to " + fDocument.get(tr.getOffset(),tr.getLength()));
 		} catch (BadLocationException e) {
 			// muffle
 		}
@@ -223,6 +247,7 @@ public class SugarCubeMacroChecker implements IReconcilingStrategy, IReconciling
 				MacroDictionary md = MacroDictionary.getInstance();
 				String problem = md.check(fDocument.get(tr.getOffset()+2,length-4));
 				if (problem != null) fCollector.accept(tr, problem);
+				else fCollector.clear(tr);
 			}
 		} catch (BadLocationException ex) {
 			// shouldn't happen:
