@@ -203,7 +203,6 @@ public class SpellingReconcileStrategyFixed
 
 	@Override
 	public void initialReconcile() {
-		System.out.println("Calling bad initialReconcile");
 		try {
 			if (fCollector != null) fCollector.beginCollecting();
 			reconcile(new Region(0,getDocument().getLength()));
@@ -214,7 +213,6 @@ public class SpellingReconcileStrategyFixed
 	
 	@Override
 	public void initialReconcile(String contentType) {
-		System.out.println("Calling spelling initialReconcile(" + contentType + ")");
 		if (fProgressMonitor != null) {
 			fProgressMonitor.beginTask("Checking Spelling", 12);
 		}

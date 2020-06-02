@@ -69,7 +69,6 @@ public class SugarCubeMacroChecker implements IReconcilingStrategy, IReconciling
 		}
 
 		public void accept(IRegion location, String problem) {
-			System.out.println("annotating error: " + problem);
 			fAddAnnotations.put(new SugarCubeMacroAnnotation(problem), new Position(location.getOffset(), location.getLength()));
 		}
 
@@ -214,14 +213,6 @@ public class SugarCubeMacroChecker implements IReconcilingStrategy, IReconciling
 			return;
 		}
 		if (fProgressMonitor != null && fProgressMonitor.isCanceled()) return;
-		/*
-		try {
-			ITypedRegion tr = TextUtilities.getPartition(fDocument, IDocumentExtension3.DEFAULT_PARTITIONING, region.getOffset(), false);
-			check(tr);
-		} catch (BadLocationException e) {
-			// shouldn't happen
-			System.err.println("bad region: " + e);
-		}*/
 		check(region);
 	}
 
