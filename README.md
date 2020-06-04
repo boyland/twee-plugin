@@ -20,6 +20,14 @@ Provide editor support for Twee3 code using SugarCube.  Currently it only provid
 ## Installation
 The release page has a JAR file that can be dropped in the `plugins` folder of your Eclipse installation.  
 Or you can clone the whole project into an Eclipse workspace with Java and Plugin Development support, and then run an Eclipse workbench within it using this plugin.
+## Desired New Features
+* Add an outline view for Twee files, showing passages.
+* Highlight [script] pages as JavaScript, not Twee
+  (prevent spell checker from checking.)
+* "type" checking of SC macro parameters
+* check nesting of SC macros
+* check HTML
+* check JavaScript (TweeScript) for syntactic correctness
 ## Documentation
 ### Macro definition syntax
 If you use non-standard SugarCube macros (or declare your own widgets), you will need to declare them in a JSON file or uses of them will be marked as incorrect.  The JSON file has one value for each macro.  Most generally this is a JSON object with the following properties:
