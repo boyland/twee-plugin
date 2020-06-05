@@ -101,7 +101,7 @@
 		],
 		"isNested" : true
 	},
-	"optionfrom" : {
+	"optionsfrom" : {
 		"argumentSyntax" : "EXPRESSION",
 		"nestedMacros" : [
 			"cycle",
