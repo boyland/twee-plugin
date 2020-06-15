@@ -1,6 +1,9 @@
 # twee-plugin
 Eclipse plugin for Twee3 + SugarCube
 ## Version
+Twee Plugin version 0.5
+* outline view available
+
 Twee Plugin version 0.4
 * macro checking enabled
 * new file wizard, including creating an IFID
@@ -21,7 +24,6 @@ Provide editor support for Twee3 code using SugarCube.  Currently it only provid
 The release page has a JAR file that can be dropped in the `plugins` folder of your Eclipse installation.  
 Or you can clone the whole project into an Eclipse workspace with Java and Plugin Development support, and then run an Eclipse workbench within it using this plugin.
 ## Desired New Features
-* Add an outline view for Twee files, showing passages.
 * Highlight [script] pages as JavaScript, not Twee
   (prevent spell checker from checking.)
 * "type" checking of SC macro parameters
