@@ -2,6 +2,7 @@ package edu.uwm.twee.editors;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.source.ISourceViewer;
+import org.eclipse.swt.custom.StyledText;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
@@ -47,6 +48,26 @@ public class TweeEditor extends TextEditor {
   protected void doSetInput(IEditorInput input) throws CoreException {
     super.doSetInput(input);
     if (fOutlinePage != null) fOutlinePage.setInput(input);
+  }
+
+  /**
+   * Return the cursor position as an offset within the document.
+   * (Why isn't this standard?)
+   * @return offset with the document of the editor "caret".
+   * @see #getCursorPosition()
+   */
+  protected int getCursorOffset() {
+    final ISourceViewer sourceViewer = getSourceViewer();
+    StyledText styledText= sourceViewer.getTextWidget();
+    return widgetOffset2ModelOffset(sourceViewer, styledText.getCaretOffset());
+  }
+  
+  @Override
+  protected void handleCursorPositionChanged() {
+    super.handleCursorPositionChanged();
+    if (fOutlinePage != null) {
+      fOutlinePage.cursorPositionChanged(this.getCursorOffset());
+    }
   }
 
 

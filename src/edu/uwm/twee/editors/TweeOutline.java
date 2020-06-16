@@ -32,6 +32,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
@@ -40,7 +41,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.texteditor.IDocumentProvider;
-import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.ui.views.contentoutline.ContentOutlinePage;
 
 import edu.uwm.eclipse.util.IReconcilingStrategyExtension2;
@@ -199,7 +199,7 @@ public class TweeOutline extends ContentOutlinePage {
      * @param reg region to remove passages from, if null, this means remove all
      * @param add new passages to add
      */
-    public void replace(IRegion reginit, final PassageOutlineElement[] add) {
+    public void replace(final IRegion reginit, final PassageOutlineElement[] add) {
       final IRegion reg = stretchToInclude(reginit,add);
       Display.getDefault().asyncExec(() -> {
         Set<PassageOutlineElement> toRemove;
@@ -237,15 +237,26 @@ public class TweeOutline extends ContentOutlinePage {
             e.printStackTrace();
           }
         }
+        if (fTextEditor != null) {
+          cursorPositionChanged(fTextEditor.getCursorOffset());
+        }
       });
     }
     
-    public PassageOutlineElement get(int offset) {
+    /**
+     * Return the passage that includes this position 
+     * @param offset offset in the document
+     * @param inBodyOK whether being in the "body" of a passage counts,
+     * or (if false) only if it's in the header.
+     * @return passage element for the given position
+     */
+    public PassageOutlineElement get(int offset, boolean inBodyOK) {
       PassageOutlineElement mark = new PassageOutlineElement(offset);
-      PassageOutlineElement poe = passages.floor(mark);
-      if (poe.getPosition().overlapsWith(offset, 1)) return poe;
+      PassageOutlineElement poe;
       poe = passages.ceiling(mark);
-      if (poe.getPosition().overlapsWith(offset, 1)) return poe;
+      if (poe.getPosition().overlapsWith(offset, 0)) return poe;
+      poe = passages.floor(mark);
+      if (inBodyOK || poe.getPosition().overlapsWith(offset, 0)) return poe;
       return null;
     }
   }
@@ -441,7 +452,7 @@ public class TweeOutline extends ContentOutlinePage {
   
   protected IEditorInput fInput;
   protected IDocumentProvider fDocumentProvider;
-  protected ITextEditor fTextEditor;
+  protected TweeEditor fTextEditor;
   protected ISourceViewer fSourceViewer;
   protected MyReconcilingStrategy fReconcilingStrategy;
   protected IReconciler fReconciler;
@@ -451,7 +462,7 @@ public class TweeOutline extends ContentOutlinePage {
    * @param provider the document provider
    * @param editor the editor
    */
-  public TweeOutline(IDocumentProvider provider, ITextEditor editor, ISourceViewer viewer) {
+  public TweeOutline(IDocumentProvider provider, TweeEditor editor, ISourceViewer viewer) {
     super();
     this.fDocumentProvider = provider;
     this.fTextEditor = editor;
@@ -503,15 +514,17 @@ public class TweeOutline extends ContentOutlinePage {
     fReconciler = reconciler;
   }
 
+  private transient boolean reentering = false; // set to true to avoid reacting to changes we generate
   
   /* (non-Javadoc)
    * Method declared on ContentOutlinePage
    */
   @Override
   public void selectionChanged(SelectionChangedEvent event) {
-    ISelection selection= event.getSelection();
-    
     super.selectionChanged(event);
+    if (reentering) return;
+    
+    ISelection selection= event.getSelection();
     if (selection.isEmpty())
       fTextEditor.resetHighlightRange();
     else {
@@ -527,6 +540,24 @@ public class TweeOutline extends ContentOutlinePage {
   }
 
   /**
+   * The cursor position in the editor changed.  Move the selection in the outline.
+   * @param cursorOffset offset with the document of the cursor.
+   */
+  public void cursorPositionChanged(int cursorOffset) {
+    if (reentering) return;
+    MyContentProvider provider = (MyContentProvider)getTreeViewer().getContentProvider();
+    PassageOutlineElement poe = provider.get(cursorOffset,true);
+    if (poe != null) {
+      reentering = true;
+      try {
+        getTreeViewer().setSelection(new StructuredSelection(poe));
+      } finally {
+        reentering = false;
+      }
+    }
+  }
+  
+  /**
    * Return the passage whose header overlaps the given document position 
    * @param offset position in document
    * @return passage outline element overlapping the given position, or null if no such passage
@@ -534,6 +565,6 @@ public class TweeOutline extends ContentOutlinePage {
   public PassageOutlineElement get(int offset) {
     if (getTreeViewer() == null) return null;
     MyContentProvider p = (MyContentProvider)getTreeViewer().getContentProvider();
-    return p.get(offset);
+    return p.get(offset,false);
   }
 }

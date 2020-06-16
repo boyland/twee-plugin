@@ -1,7 +1,7 @@
 # twee-plugin
 Eclipse plugin for Twee3 + SugarCube
 ## Version
-Twee Plugin version 0.5
+Twee Plugin version 0.5.1
 * outline view available
 
 Twee Plugin version 0.4
