@@ -254,9 +254,9 @@ public class TweeOutline extends ContentOutlinePage {
       PassageOutlineElement mark = new PassageOutlineElement(offset);
       PassageOutlineElement poe;
       poe = passages.ceiling(mark);
-      if (poe.getPosition().overlapsWith(offset, 0)) return poe;
+      if (poe != null && poe.getPosition().overlapsWith(offset, 0)) return poe;
       poe = passages.floor(mark);
-      if (inBodyOK || poe.getPosition().overlapsWith(offset, 0)) return poe;
+      if (poe != null && (inBodyOK || poe.getPosition().overlapsWith(offset, 0))) return poe;
       return null;
     }
   }
