@@ -40,6 +40,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.views.contentoutline.ContentOutlinePage;
 
@@ -450,6 +451,18 @@ public class TweeOutline extends ContentOutlinePage {
     
   }
   
+  /**
+   * A selection that has a particular type so that we know that
+   * we generated this selection and can avoid selection loops.
+   */
+  private class MySelection extends StructuredSelection {
+
+    public MySelection(Object element) {
+      super(element);
+    }
+   
+  }
+  
   protected IEditorInput fInput;
   protected IDocumentProvider fDocumentProvider;
   protected TweeEditor fTextEditor;
@@ -515,16 +528,22 @@ public class TweeOutline extends ContentOutlinePage {
   }
 
   private transient boolean reentering = false; // set to true to avoid reacting to changes we generate
-  
+
   /* (non-Javadoc)
    * Method declared on ContentOutlinePage
    */
   @Override
   public void selectionChanged(SelectionChangedEvent event) {
     super.selectionChanged(event);
-    if (reentering) return;
-    
+    if (reentering) return; // not sufficient to avoid notification loops
     ISelection selection= event.getSelection();
+    // System.out.println("Selection changed! " + selection);
+    IWorkbenchPart active = fTextEditor.getSite().getPage().getActivePart();
+    if (fTextEditor == active) {
+      // if the text editor is active, we shouldn't change the carat!
+      return;
+    }
+    
     if (selection.isEmpty())
       fTextEditor.resetHighlightRange();
     else {
@@ -545,6 +564,7 @@ public class TweeOutline extends ContentOutlinePage {
    */
   public void cursorPositionChanged(int cursorOffset) {
     if (reentering) return;
+    // System.out.println("cursorPositionChanged: " + cursorOffset);
     MyContentProvider provider = (MyContentProvider)getTreeViewer().getContentProvider();
     PassageOutlineElement poe = provider.get(cursorOffset,true);
     if (poe != null) {
@@ -553,6 +573,12 @@ public class TweeOutline extends ContentOutlinePage {
         getTreeViewer().setSelection(new StructuredSelection(poe));
       } finally {
         reentering = false;
+        // Unfortunately selection events can be delayed until later,
+        // so the "re-entering" technique is insufficient.
+        // Furthermore, Eclipse will sometimes (always?) re-create the selection
+        // so we can't use the type of the structure either
+        // The working solution is to check the active part
+        // (see @{link #selectionChanged}).
       }
     }
   }
