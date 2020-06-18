@@ -19,7 +19,6 @@ public class Version {
 	public String toString() { return versionString; }
 
 	/**
-	 * (Eventually)
 	 * Compute the version string by trying to find the file "README.md"
 	 * and reading the appropriate line
 	 * @return version string
