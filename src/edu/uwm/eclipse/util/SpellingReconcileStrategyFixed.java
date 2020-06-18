@@ -99,8 +99,9 @@ public class SpellingReconcileStrategyFixed
 				Iterator<Annotation> iter= fAnnotationModel.getAnnotationIterator();
 				while (iter.hasNext()) {
 					Annotation annotation= iter.next();
-					if (SpellingAnnotation.TYPE.equals(annotation.getType()) &&
-							(reg == null || fAnnotationModel.getPosition(annotation).overlapsWith(reg.getOffset(), reg.getLength())))
+					final Position position = fAnnotationModel.getPosition(annotation);
+          if (SpellingAnnotation.TYPE.equals(annotation.getType()) &&
+							(reg == null || position.getLength() == 0 || position.overlapsWith(reg.getOffset()-1, reg.getLength()+2)))
 						toRemove.add(annotation);
 				}
 				Annotation[] annotationsToRemove= toRemove.toArray(new Annotation[toRemove.size()]);
