@@ -451,18 +451,6 @@ public class TweeOutline extends ContentOutlinePage {
     
   }
   
-  /**
-   * A selection that has a particular type so that we know that
-   * we generated this selection and can avoid selection loops.
-   */
-  private class MySelection extends StructuredSelection {
-
-    public MySelection(Object element) {
-      super(element);
-    }
-   
-  }
-  
   protected IEditorInput fInput;
   protected IDocumentProvider fDocumentProvider;
   protected TweeEditor fTextEditor;
